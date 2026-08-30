@@ -51,19 +51,19 @@ DEFAULT_IMPLEMENTS = {
 
 def load_tractors() -> dict:
     if not os.path.exists(TRACTOR_PROFILE):
-        save_profiles_tractor(DEFAULT_TRACTORS)
+        save_tractors(DEFAULT_TRACTORS)
         return DEFAULT_TRACTORS
     try:
         with open(TRACTOR_PROFILE, "r") as f:
             return json.load(f)
     except json.JSONDecodeError:
         print("Warning: Could not read profile file. Re-creating defaults.")
-        save_profiles_tractor(DEFAULT_TRACTORS)
+        save_tractors(DEFAULT_TRACTORS)
         return DEFAULT_TRACTORS
 
-def save_profiles_tractor(profiles:dict) -> None:
+def save_tractors(tractors:dict) -> None:
     with open(TRACTOR_PROFILE, "w") as f:
-        json.dump(profiles, f, indent = 4)
+        json.dump(tractors, f, indent = 4)
 
 def add_tractor_profile(
         name: str,
@@ -71,23 +71,23 @@ def add_tractor_profile(
         fuel_burn_hour: float,
         wear_cost: float
 )   ->  dict:
-    profiles = load_tractors()
+    tractors = load_tractors()
 
-    profiles[name] = {
+    tractors[name] = {
         "HP": float(HP),
         "fuel_burn_hour": float(fuel_burn_hour),
         "wear_cost": float(wear_cost)
     }
 
-    save_profiles_tractor(profiles)
-    return profiles
+    save_tractors(tractors)
+    return tractors
 
 def delete_tractor_profile(name: str) -> dict:
-    profiles = load_tractors()
-    if name in profiles:
-        del profiles[name]
-        save_profiles_tractor(profiles)
-    return profiles
+    tractors = load_tractors()
+    if name in tractors:
+        del tractors[name]
+        save_tractors(tractors)
+    return tractors
 
 # Implement Function
 
@@ -126,7 +126,7 @@ def add_implement_profile(
     save_implements(implements)
     return implements
 
-def delete_implements(name: str) -> dict:
+def delete_implements_profiles(name: str) -> dict:
     implements = load_implements()
     if name in implements:
         del implements[name]
