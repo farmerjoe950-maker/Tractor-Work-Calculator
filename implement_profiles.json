@@ -1,0 +1,18 @@
+{
+    "6ft Brush Cutter": {
+        "specs": {
+            "category": "Mowing",
+            "width": 6,
+            "pto_speed": 540,
+            "min_hp": 30,
+            "max_hp": 90
+        }
+    },
+    "5ft Box Blade": {
+        "specs": {
+            "category": "Grading",
+            "width": 5,
+            "min_hp": 25
+        }
+    }
+}

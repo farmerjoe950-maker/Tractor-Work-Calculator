@@ -1,0 +1,23 @@
+{
+    "John Deere 5075E": {
+        "specs": {
+            "HP": 75,
+            "fuel_burn_hour": 2.8,
+            "wear_cost": 75
+        }
+    },
+    "Mahindra 4540": {
+        "specs": {
+            "HP": 41,
+            "fuel_burn_hour": 2.8,
+            "wear_cost": 41
+        }
+    },
+    "Kubota L2501": {
+        "specs": {
+            "HP": 25,
+            "fuel_burn_hour": 1.2,
+            "wear_cost": 1.5
+        }
+    }
+}
