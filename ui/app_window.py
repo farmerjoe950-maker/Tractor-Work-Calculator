@@ -71,7 +71,7 @@ class TractorCalculatorApp(ctk.CTk):
         )
         self.tractor_dropdown.pack(fill="x", padx= 15, pady=(0,10))
 
-# Implement Selection Frame
+        # Implement Selection Frame
 
         self.equip_frame = ctk.CTkFrame(self)
         self.equip_frame.pack(
@@ -98,7 +98,102 @@ class TractorCalculatorApp(ctk.CTk):
         )
         self.implement_dropdown.pack(fill= "x", padx= 15, pady=(0,10))
 
-# Category Chanege
+        #Job Details Frame
+
+        self.job_details_frame = ctk.CTkFrame(self)
+        self.job_details_frame.pack(
+            padx= 20,
+            pady= 10,
+            fill= "x"
+        )
+        self.job_size_label = ctk.CTkLabel(
+            self.job_details_frame,
+            text= "Job Size (Acres):",
+            font= ctk.CTkFont(weight= "bold")
+        )
+        self.job_size_label.pack(
+            anchor= "w",
+            padx= 15,
+            pady= (0,10)
+        )
+        self.acres_entry = ctk.CTkEntry(
+            self.job_details_frame,
+            placeholder_text= "5"
+        )
+        self.acres_entry.pack(
+            fill= "x",
+            padx= 15,
+            pady= (0,10)
+        )
+        self.fuel_price_label = ctk.CTkLabel(
+            self.job_details_frame,
+            text= "Fuel Price ($/gal):",
+            font= ctk.CTkFont(weight= "bold")
+        )
+        self.fuel_price_label.pack(
+            anchor= "w",
+            padx= 15,
+            pady= (5,0)
+        )
+        self.fuel_entry = ctk.CTkEntry(
+            self.job_details_frame,
+            placeholder_text= "4.50"
+        )
+        self.fuel_entry.pack(
+           fill= "x",
+           padx= 15,
+           pady= (0,5) 
+        )
+        self.hourly_rate_label = ctk.CTkLabel(
+            self.job_details_frame,
+            text= "Hourly Rate ($/hr):",
+            font= ctk.CTkFont(weight= "bold")
+        )
+        self.hourly_rate_label.pack(
+            anchor= "w",
+            padx= 15,
+            pady= (5,0)
+        )
+        self.hourly_entry = ctk.CTkEntry(self.job_details_frame)
+        self.hourly_entry.insert(0, "45")
+        self.hourly_entry.pack(
+            fill= "x",
+            padx= 15,
+            pady= (5,0)
+        )
+
+        # Calculate button
+
+        self.calc_button = ctk.CTkButton(
+            self,
+            text= "Calculate Quote",
+            font= ctk.CTkFont(weight= "bold", size= 14),
+            command=self.on_calculate_click
+        )
+        self.calc_button.pack(
+            padx= 20,
+            pady= 15,
+            fill= "x"
+        )
+
+        # Results Box
+
+        self.results_box = ctk.CTkTextbox(
+            self,
+            height= 140,
+            font= ctk.CTkFont(size= 14)
+        )
+        self.results_box.pack(
+            padx= 20,
+            pady= (0,20),
+            fill= "both",
+            expand= True
+        )
+        self.results_box.insert(
+           "1.0", "Please select your equipment, enter job specs, and click Calculate."
+        )
+
+    # Category Chanege
 
     def on_category_change(self, selected_category):
         matching_implements = [
