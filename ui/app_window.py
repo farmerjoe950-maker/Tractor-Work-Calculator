@@ -1,21 +1,23 @@
+import sys
+from pathlib import Path
+root_dir = Path(__file__).resolve().parent.parent
+if str(root_dir) not in sys.path:
+    sys.path.insert(0, str(root_dir))
 import customtkinter as ctk
-from modules.profile_manager import(
-    load_implements,
-    load_tractors
-)
+from modules.calculator import calculate_job_quote
 
 ctk.set_appearance_mode("Dark")
 ctk.set_default_color_theme("green")
 
 class TractorCalculatorApp(ctk.CTk): 
-    def __init__(self, fg_color = None, **kwargs):
+    def __init__(self, tractors= None, implements= None, fg_color = None, **kwargs):
         super().__init__(fg_color, **kwargs)
 
         self.title("Tractor Work Calculator & Estimator")
-        self.geometry("600x700")
+        self.geometry("600x1000")
         self.resizable(False, False)
-        self.tractors = load_tractors()
-        self.implements = load_implements()
+        self.tractors = tractors if tractors is not None else {}
+        self.implements = implements if implements is not None else {}
         self.header_label = ctk.CTkLabel(
             self,
             text= "Tractor Work Calculator",
@@ -180,7 +182,7 @@ class TractorCalculatorApp(ctk.CTk):
 
         self.results_box = ctk.CTkTextbox(
             self,
-            height= 140,
+            height= 450,
             font= ctk.CTkFont(size= 14)
         )
         self.results_box.pack(
@@ -206,12 +208,88 @@ class TractorCalculatorApp(ctk.CTk):
         if matching_implements:
             self.implement_dropdown.set(matching_implements[0])
 
+    # Results #
+
     def on_calculate_click(self):
-        ## button handler ##
-        pass
+        self.results_box.delete("1.0", "end")
+        try:
+            acres = float(self.acres_entry.get())
+            fuel_price = float(self.fuel_entry.get())
+            hourly_rate = float(self.hourly_entry.get())
+            print(f"Inputs Parsed: acres={acres}, fuel={fuel_price}, rate= {hourly_rate}")
+            if acres <= 0:
+                self.results_box.insert(
+                    "1.0", "Error: Job size (acres) must be greater that 0."
+                )
+                return
+        except ValueError:
+            print(f"parsing failed {e}")
+            self.results_box.insert(
+                "1.0",
+                "Error: Please enter valid numbers for Acres, Fuel Price, and Hourly Rate"
+            )
+            return
 
-if __name__ == "__main__":
-    app = TractorCalculatorApp()
-    app.mainloop()
+        selected_implement_name = self.implement_dropdown.get()
+        selected_tractor_name = self.tractor_dropdown.get()
+        print(f"selected Dropdowns: tractors= '{selected_tractor_name}', implements = '{selected_implement_name}'")
 
-#implement_names = list(self.implements.keys())
+        print(f"Available implement keys: {list(self.implements.keys())}")
+        print(f"Available Tracotr keys: {list(self.tractors.keys())}")
+
+        implement_data = self.implements.get(selected_implement_name, {}).get("specs", {})
+        tractor_data = self.tractors.get(selected_tractor_name, {}).get("specs", {})
+        print(f" Retrieved implement_data: {implement_data}")
+        print(f"Retrieved tractor_data: {tractor_data}")
+
+        try:
+            speed = implement_data.get("speed", 5.0)
+            width = implement_data.get("width", 10.0)
+
+            res = calculate_job_quote(
+                acres=acres,
+                #speed=speed,
+                #width=width ,
+                fuel_price=fuel_price,
+                hourly_rate=hourly_rate,
+                implement_data=implement_data,
+                tractor_data=tractor_data,
+            )
+            print(f"Calculation Result: {res}")
+        except Exception as e:
+            print(f"CRASH inside calculate_job_quote: {e}")
+            self.results_box.insert("1.0", f"Calculation Error: {e}")
+            return
+
+        res = calculate_job_quote(
+            acres, 
+            fuel_price,
+            hourly_rate,
+            implement_data,
+            tractor_data
+        )
+
+        report = []
+        if res["hp_warning_low"]:
+            report.append(
+                f" WARNING: Selected tractor ({res['tractor_hp']} PTO HP) is"
+                f" underpowered for {selected_implement_name} (Requires {res['min_hp']} HP)!\n"
+            )
+        if res["hp_warning_high"]:
+            report.append(
+                f" WARNING: Selected tractor ({res['tractor_hp']} PTO HP) is"
+                f" overpowered for {selected_implement_name} (Requires {res['max_hp']} HP)!\n"
+            )
+        if res.get("implement_pto_speed"):
+            report.append(
+                f" REMINDER: This implement is set up for"
+                f" {res['implement_pto_speed']} RPM! Please verify PTO speed before operation\n"
+            )
+
+        report.extend([
+           "JOB QUOTE REPORT",
+           f" GRAND TOTAL: $ {res.get('total_quote', 0): .2f} "
+        ])
+
+        self.results_box.insert("1.0", "\n" .join(report))
+
