@@ -3,9 +3,12 @@ import os
 from pathlib import Path
 from ui.app_window import TractorCalculatorApp
 
+BASE_DIR = Path(__file__).parent
+
 def load_json(filename: str) -> dict:
-    path = Path(filename)
+    path = BASE_DIR / "data" / filename
     if not path.exists():
+        print(f" ERROR: File not found at {path}")
         return{}
     with open(path, "r") as f:
         return json.load(f)

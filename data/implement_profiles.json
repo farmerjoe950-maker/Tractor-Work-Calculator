@@ -3,6 +3,7 @@
         "specs": {
             "category": "Mowing",
             "width": 6,
+            "speed": 2.5,
             "pto_speed": 540,
             "min_hp": 30,
             "max_hp": 90

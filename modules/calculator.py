@@ -11,7 +11,7 @@ def calculate_job_quote(
     # Extract specs #
 
     width = implement_data.get("width", 5)
-    speed = implement_data.get("working_speed_mph", 2.5)
+    speed = implement_data.get("speed", 2.5)
     implement_pto_speed = implement_data.get("pto_speed")
     implement_wear = implement_data.get("wear_cost", 5)
     min_hp = implement_data.get("min_hp", 0)

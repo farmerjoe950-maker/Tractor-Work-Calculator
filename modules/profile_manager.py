@@ -6,44 +6,34 @@ IMPLEMENT_PROFILE = "implement_profiles.json"
 
 DEFAULT_TRACTORS = {
     "John Deere 5075E": {
-        "specs": {
-            "HP": 75,
-            "fuel_burn_hour": 2.8,
-            "wear_cost": 75
-        }
+        "HP": 75,
+        "fuel_burn_hour": 2.8,
+        "wear_cost": 75
     },
     "Mahindra 4540": {
-        "specs": {
-            "HP": 41,
-            "fuel_burn_hour": 2.8,
-            "wear_cost": 41
-        }
+        "HP": 41,
+        "fuel_burn_hour": 2.8,
+        "wear_cost": 41
     },
     "Kubota L2501": {
-        "specs": {
-            "HP": 25,
-            "fuel_burn_hour": 1.2,
-            "wear_cost": 1.5
-        }
+        "HP": 25,
+        "fuel_burn_hour": 1.2,
+        "wear_cost": 1.5
     }
 }
 
 DEFAULT_IMPLEMENTS = {
     "6ft Brush Cutter": {
-        "specs": {
-            "category": "Mowing",
-            "width": 6,
-            "pto_speed": 540,
-            "min_hp": 30,
-            "max_hp": 90
-        }
+        "category": "Mowing",
+        "width": 6,
+        "pto_speed": 540,
+        "min_hp": 30,
+        "max_hp": 90
     },
     "5ft Box Blade": {
-        "specs": {
-            "category": "Grading",
-            "width": 5,
-            "min_hp": 25
-        }
+        "category": "Grading",
+        "width": 5,
+        "min_hp": 25
     }
 }
 
@@ -111,6 +101,7 @@ def add_implement_profile(
         name: str,
         category: str,
         width: float,
+        speed: float,
         pto_speed: float,
         min_hp: float,
         max_hp: float
@@ -119,6 +110,7 @@ def add_implement_profile(
     implements[name] = {
         "Category": str(category),
         "Width": float(width),
+        "Speed": float(speed),
         "PTO Speed": float(pto_speed),
         "MIN HP": float(min_hp),
         "MAX HP": float(max_hp)

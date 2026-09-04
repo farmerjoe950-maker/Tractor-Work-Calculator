@@ -14,7 +14,7 @@ class TractorCalculatorApp(ctk.CTk):
         super().__init__(fg_color, **kwargs)
 
         self.title("Tractor Work Calculator & Estimator")
-        self.geometry("600x1000")
+        self.geometry("600x850")
         self.resizable(False, False)
         self.tractors = tractors if tractors is not None else {}
         self.implements = implements if implements is not None else {}
@@ -216,14 +216,12 @@ class TractorCalculatorApp(ctk.CTk):
             acres = float(self.acres_entry.get())
             fuel_price = float(self.fuel_entry.get())
             hourly_rate = float(self.hourly_entry.get())
-            print(f"Inputs Parsed: acres={acres}, fuel={fuel_price}, rate= {hourly_rate}")
             if acres <= 0:
                 self.results_box.insert(
                     "1.0", "Error: Job size (acres) must be greater that 0."
                 )
                 return
         except ValueError:
-            print(f"parsing failed {e}")
             self.results_box.insert(
                 "1.0",
                 "Error: Please enter valid numbers for Acres, Fuel Price, and Hourly Rate"
@@ -232,16 +230,11 @@ class TractorCalculatorApp(ctk.CTk):
 
         selected_implement_name = self.implement_dropdown.get()
         selected_tractor_name = self.tractor_dropdown.get()
-        print(f"selected Dropdowns: tractors= '{selected_tractor_name}', implements = '{selected_implement_name}'")
 
-        print(f"Available implement keys: {list(self.implements.keys())}")
-        print(f"Available Tracotr keys: {list(self.tractors.keys())}")
+        implement_data = self.implements.get(selected_implement_name, {})
+        tractor_data = self.tractors.get(selected_tractor_name, {})
 
-        implement_data = self.implements.get(selected_implement_name, {}).get("specs", {})
-        tractor_data = self.tractors.get(selected_tractor_name, {}).get("specs", {})
-        print(f" Retrieved implement_data: {implement_data}")
-        print(f"Retrieved tractor_data: {tractor_data}")
-        speed = implement_data.get("working_speed_mph", implement_data.get("speed", 5.0))
+        speed = implement_data.get("speed", implement_data.get("speed", 5.0))
         width = implement_data.get("width", 10.0)
         try:
             res = calculate_job_quote(
@@ -254,9 +247,7 @@ class TractorCalculatorApp(ctk.CTk):
                 tractor_data=tractor_data,
             )
 
-            print(f"Calculation Result: {res}")
         except Exception as e:
-            print(f"CRASH inside calculate_job_quote: {e}")
             self.results_box.insert("1.0", f"Calculation Error: {e}")
             return
 
