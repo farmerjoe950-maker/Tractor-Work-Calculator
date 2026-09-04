@@ -2,6 +2,8 @@ def calculate_job_quote(
         acres: float,
         fuel_price: float,
         hourly_rate: float,
+        speed : float,
+        width : float,
         implement_data: dict,
         tractor_data: dict
 ) -> dict:
@@ -9,9 +11,9 @@ def calculate_job_quote(
     # Extract specs #
 
     width = implement_data.get("width", 5)
-    speed_mph = implement_data.get("working_speed_mph", 2.5)
+    speed = implement_data.get("working_speed_mph", 2.5)
     implement_pto_speed = implement_data.get("pto_speed")
-    impl_wear = implement_data.get("wear_cost", 5)
+    implement_wear = implement_data.get("wear_cost", 5)
     min_hp = implement_data.get("min_hp", 0)
     max_hp = implement_data.get("max_hp", 999)
 
@@ -21,17 +23,18 @@ def calculate_job_quote(
 
     # Math Engine #
 
-    field_capacity = (width * speed_mph * 0.80) / 8.25
+    field_capacity = (width * speed * 0.80) / 8.25
     job_hours = acres / field_capacity
 
     fuel_used = job_hours * gph
     fuel_cost = fuel_used * fuel_price
 
-    total_wear_rate = impl_wear + tractor_wear
-    wear_cost = job_hours + total_wear_rate
+    total_wear_rate = implement_wear + tractor_wear
+    wear_cost = job_hours * total_wear_rate
 
     labor_cost = hourly_rate * job_hours
     total_quote = fuel_cost + wear_cost + labor_cost
+    print(f"DEBUG MATH: -> fuel: {fuel_cost}, wear: {wear_cost}, labor {labor_cost}, SUM: {total_quote}")
 
     return {
         "field_capacity": field_capacity,

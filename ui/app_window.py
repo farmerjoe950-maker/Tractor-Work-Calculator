@@ -241,33 +241,24 @@ class TractorCalculatorApp(ctk.CTk):
         tractor_data = self.tractors.get(selected_tractor_name, {}).get("specs", {})
         print(f" Retrieved implement_data: {implement_data}")
         print(f"Retrieved tractor_data: {tractor_data}")
-
+        speed = implement_data.get("working_speed_mph", implement_data.get("speed", 5.0))
+        width = implement_data.get("width", 10.0)
         try:
-            speed = implement_data.get("speed", 5.0)
-            width = implement_data.get("width", 10.0)
-
             res = calculate_job_quote(
                 acres=acres,
-                #speed=speed,
-                #width=width ,
                 fuel_price=fuel_price,
                 hourly_rate=hourly_rate,
+                speed=speed,
+                width=width,
                 implement_data=implement_data,
                 tractor_data=tractor_data,
             )
+
             print(f"Calculation Result: {res}")
         except Exception as e:
             print(f"CRASH inside calculate_job_quote: {e}")
             self.results_box.insert("1.0", f"Calculation Error: {e}")
             return
-
-        res = calculate_job_quote(
-            acres, 
-            fuel_price,
-            hourly_rate,
-            implement_data,
-            tractor_data
-        )
 
         report = []
         if res["hp_warning_low"]:
