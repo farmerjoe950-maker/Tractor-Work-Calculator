@@ -1,21 +1,17 @@
-import json
-import os
+import sys
 from pathlib import Path
+import customtkinter as ctk
+
+BASE_DIR = Path(__file__).resolve().parent
+if str(BASE_DIR) not in sys.path:
+    sys.path.insert(0, str(BASE_DIR))
+
 from ui.app_window import TractorCalculatorApp
 
-BASE_DIR = Path(__file__).parent
-
-def load_json(filename: str) -> dict:
-    path = BASE_DIR / "data" / filename
-    if not path.exists():
-        print(f" ERROR: File not found at {path}")
-        return{}
-    with open(path, "r") as f:
-        return json.load(f)
-
 if __name__ == "__main__":
-    tractors = load_json("tractor_profiles.json")
-    implements = load_json("implement_profiles.json")
+    print("Starting application...")
+    ctk.set_appearance_mode("Dark")
+    ctk.set_default_color_theme("green")
 
-app = TractorCalculatorApp(tractors, implements)
-app.mainloop()
+    app = TractorCalculatorApp()
+    app.mainloop()
