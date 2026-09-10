@@ -2,6 +2,7 @@ import customtkinter as ctk
 from modules import profile_manager
 from ui.frames.calculator.inputs_frame import InputsFrame
 from ui.frames.calculator.results_frame import ResultsFrame
+from ui.frames.profile_manager.list_frame import ProfileManagerFrame
 
 class TractorCalculatorApp(ctk.CTk):
     def __init__(self, fg_color= None, **kwargs):
@@ -31,7 +32,7 @@ class TractorCalculatorApp(ctk.CTk):
             pady=10
         )
         self.tab_calculator = self.tab_view.add("Calculator")
-        self.tab_profiles = self.tab_view.add("Profile Manager")
+        self.tab_profiles = self.tab_view.add("Equipment Manager")
         self.tab_settings = self.tab_view.add("Settings")
 
         # SCROLL FRAME # 
@@ -74,12 +75,11 @@ class TractorCalculatorApp(ctk.CTk):
 
         # PROFILE MANAGER #
 
-        self.profile_placeholder = ctk.CTkLabel(
-            self.tab_profiles,
-            text= "Profile Manager",
-            font= ctk.CTkFont(size= 16)
+        self.profile_manager = ProfileManagerFrame(
+            parent=self.tab_profiles,
+            profile_manager_module=profile_manager
         )
-        self.profile_placeholder.pack(expand= True)
+        self.profile_manager.pack(fill="both", expand= True)
 
         # SETTINGS TAB #
 
