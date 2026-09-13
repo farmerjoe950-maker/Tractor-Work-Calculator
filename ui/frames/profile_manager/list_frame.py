@@ -1,6 +1,7 @@
 import customtkinter as ctk
-from modules import profile_manager as pm
 from ui.dialogs.profile_dialog import ProfilesDetailsDialog
+from ui.dialogs.add_equipment import AddEquipmentProfiles
+from ui.dialogs.delete_equipment import DeleteEquipmentDialog
 
 class ProfileManagerFrame(ctk.CTkFrame):
     def __init__(
@@ -9,9 +10,9 @@ class ProfileManagerFrame(ctk.CTkFrame):
         profile_manager_module= None,
         **kwargs
     ):
-        self.pm = profile_manager_module
-
+        
         super().__init__(parent, **kwargs)
+        self.pm = profile_manager_module
 
         self.grid_columnconfigure(0, weight=1)
         self.grid_rowconfigure(0, weight=0)
@@ -172,15 +173,34 @@ class ProfileManagerFrame(ctk.CTkFrame):
             name=name,
             data=data,
             category=category
-        ) 
+        )
+
+    def open_add_dialog(self):
+        category = self.category_switch.get()
+        AddEquipmentProfiles(
+            parent=self,
+            category=category,
+            profile_manager=self.pm,
+            on_success_callback=self._on_data_updated
+        )
+
+    def delete_selected_equipment(self):
+        category = self.category_switch.get()
+        DeleteEquipmentDialog(
+            parent=self,
+            category=category,
+            profile_manager=self.pm,
+            on_success_callback=self._on_data_updated
+        )
+
+    def _on_data_updated(self):
+        self.refresh_list()
+        self._notify_app_refresh()
 
     def on_category_changed(self, value):
         self.refresh_list()
 
-    def open_add_dialog(self):
-
-        pass
-
-    def delete_selected_equipment(self):
-
-        pass
+    def _notify_app_refresh(self):
+        app_window = self.winfo_toplevel()
+        if hasattr(app_window, "refresh_data"):
+            app_window.refresh_data()

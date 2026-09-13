@@ -1,6 +1,7 @@
 import json
 import os
 
+
 TRACTOR_PROFILE = "tractor_profiles.json"
 IMPLEMENT_PROFILE = "implement_profiles.json"
 
@@ -26,6 +27,7 @@ DEFAULT_IMPLEMENTS = {
     "6ft Brush Cutter": {
         "category": "Mowing",
         "width": 6,
+        "speed": 3,
         "pto_speed": 540,
         "min_hp": 30,
         "max_hp": 90
@@ -64,7 +66,7 @@ def add_tractor_profile(
     tractors = load_tractors()
 
     tractors[name] = {
-        "HP": float(HP),
+        "hp": float(HP),
         "fuel_burn_hour": float(fuel_burn_hour),
         "wear_cost": float(wear_cost)
     }
@@ -108,12 +110,12 @@ def add_implement_profile(
     ) -> dict:
     implements = load_implements()
     implements[name] = {
-        "Category": str(category),
-        "Width": float(width),
-        "Speed": float(speed),
-        "PTO Speed": float(pto_speed),
-        "MIN HP": float(min_hp),
-        "MAX HP": float(max_hp)
+        "category": str(category),
+        "width": float(width),
+        "speed": float(speed),
+        "pto speed": float(pto_speed),
+        "min hp": float(min_hp),
+        "max hp": float(max_hp)
     }
     save_implements(implements)
     return implements

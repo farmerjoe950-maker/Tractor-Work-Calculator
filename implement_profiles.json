@@ -10,5 +10,13 @@
         "category": "Grading",
         "width": 5,
         "min_hp": 25
+    },
+    "10 ft disc": {
+        "category": "Tillage",
+        "width": 10.0,
+        "speed": 9.0,
+        "pto speed": 0.0,
+        "min hp": 120.0,
+        "max hp": 0.0
     }
 }

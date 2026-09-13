@@ -33,7 +33,7 @@ class TractorCalculatorApp(ctk.CTk):
         )
         self.tab_calculator = self.tab_view.add("Calculator")
         self.tab_profiles = self.tab_view.add("Equipment Manager")
-        self.tab_settings = self.tab_view.add("Settings")
+        #self.tab_settings = self.tab_view.add("Settings")
 
         # SCROLL FRAME # 
 
@@ -83,12 +83,12 @@ class TractorCalculatorApp(ctk.CTk):
 
         # SETTINGS TAB #
 
-        self.settings_placeholder = ctk.CTkLabel(
-            self.tab_settings,
-            text="Settings",
-            font=ctk.CTkFont(size=16)
-        )
-        self.settings_placeholder.pack(expand= True)
+        #self.settings_placeholder = ctk.CTkLabel(
+        #   self.tab_settings,
+         #   text="Settings",
+        #    font=ctk.CTkFont(size=16)
+        #)
+        #self.settings_placeholder.pack(expand= True)
 
     def refresh_data(self):
         self.tractors = profile_manager.load_tractors()
