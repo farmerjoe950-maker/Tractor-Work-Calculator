@@ -154,6 +154,8 @@ class InputsFrame(ctk.CTkFrame):
             fill="x"
         )
 
+        self.job_details_frame.grid_columnconfigure((0, 1), weight=1)
+
         #ACRES#
 
         self.job_size_label = ctk.CTkLabel(
@@ -161,20 +163,24 @@ class InputsFrame(ctk.CTkFrame):
             text="Job Size (Acres):",
             font=ctk.CTkFont(weight="bold")
         )
-        self.job_size_label.pack(
-            anchor="w",
-            padx=15,
-            pady=(10, 0)
+        self.job_size_label.grid(
+            row=0,
+            column=0,
+            padx=10,
+            pady=(8, 0),
+            sticky="w"
         )
 
         self.acres_entry = ctk.CTkEntry(
             self.job_details_frame,
             placeholder_text="5"
         )
-        self.acres_entry.pack(
-            fill="x",
-            padx=15,
-            pady=(0, 5)
+        self.acres_entry.grid(
+            row=1,
+            column=0,
+            padx=10,
+            pady=(0, 8),
+            sticky="ew"
         )
 
         #FUEl PRICE#
@@ -184,20 +190,24 @@ class InputsFrame(ctk.CTkFrame):
             text="Fuel Price ($/gal):",
             font=ctk.CTkFont(weight="bold")
         )
-        self.fuel_price_label.pack(
-            anchor="w",
-            padx=15,
-            pady=(10, 0)
+        self.fuel_price_label.grid(
+            row=2,
+            column=0,
+            padx=10,
+            pady=(8,0),
+            sticky="w"
         )
 
         self.fuel_price_entry = ctk.CTkEntry(
             self.job_details_frame,
             placeholder_text="5"
         )
-        self.fuel_price_entry.pack(
-            fill="x",
-            padx=15,
-            pady=(0, 5)
+        self.fuel_price_entry.grid(
+            row=3,
+            column=0,
+            padx=10,
+            pady=(0, 8),
+            sticky="ew"
         )
 
         #HOURLY RATE#
@@ -207,20 +217,134 @@ class InputsFrame(ctk.CTkFrame):
             text="Hourly/Labor Rate ($/hr)",
             font=ctk.CTkFont(weight="bold")
         )
-        self.hourly_rate_label.pack(
-            anchor="w",
-            padx=15,
-            pady=(10, 0)
+        self.hourly_rate_label.grid(
+            row=4,
+            column=0,
+            padx=10,
+            pady=(8, 0),
+            sticky="w"
         )
 
         self.hourly_rate_entry = ctk.CTkEntry(
             self.job_details_frame,
             placeholder_text="30"
         )
-        self.hourly_rate_entry.pack(
-            fill="x",
-            padx=15,
-            pady=(0, 5)
+        self.hourly_rate_entry.grid(
+            row=5,
+            column=0,
+            padx=10,
+            pady=(0, 8),
+            sticky="ew"
+        )
+
+        #SPEED ENTRY#
+
+        self.speed_label = ctk.CTkLabel(
+            self.job_details_frame,
+            text="Working Speed (MPH):",
+            font=ctk.CTkFont(weight="bold")
+        )
+        self.speed_label.grid(
+            row=0,
+            column=1,
+            padx=10,
+            pady=(8, 0),
+            sticky="w"
+        )
+
+        
+
+        self.speed_entry = ctk.CTkEntry(
+            self.job_details_frame,
+            placeholder_text="5.0",
+        )
+        self.speed_entry.grid(
+            row=1,
+            column=1,
+            padx=10,
+            pady=(0, 8),
+            sticky="ew"
+        )
+
+        #LOADING FEE#
+
+        self.loading_fee_label = ctk.CTkLabel(
+            self.job_details_frame,
+            text="Loading Fee ($):",
+            font=ctk.CTkFont(weight="bold")
+        )
+        self.loading_fee_label.grid(
+            row=2,
+            column=1,
+            padx=10,
+            pady=(8, 0),
+            sticky="w"
+        )
+
+        self.loading_fee_entry = ctk.CTkEntry(
+            self.job_details_frame,
+            placeholder_text="50",
+        )
+        self.loading_fee_entry.grid(
+            row=3,
+            column=1,
+            padx=10,
+            pady=(0, 8),
+            sticky="ew"
+        )
+
+        #MILEAGE#
+
+        self.mileage_label = ctk.CTkLabel(
+            self.job_details_frame,
+            text="Round Trip Mileage (mi):",
+            font=ctk.CTkFont(weight="bold")
+        )
+        self.mileage_label.grid(
+            row=4,
+            column=1,
+            padx=10,
+            pady=(8, 0),
+            sticky="w"
+        )
+
+        self.mileage_entry = ctk.CTkEntry(
+            self.job_details_frame,
+            placeholder_text="10"
+        )
+        self.mileage_entry.grid(
+            row=5,
+            column=1,
+            padx=10,
+            pady=(0, 8),
+            sticky="ew"
+        )
+
+        #MILEAGE RATE#
+
+        self.mileage_rate_label = ctk.CTkLabel(
+            self.job_details_frame,
+            text="Mileage Rate ($/mi):",
+            font=ctk.CTkFont(weight="bold")
+        )
+        self.mileage_rate_label.grid(
+            row=6,
+            column=1,
+            padx=10,
+            pady=(8, 0),
+            sticky="w"
+        )
+
+        self.mileage_rate_entry = ctk.CTkEntry(
+            self.job_details_frame,
+            placeholder_text="0.76"
+        )
+        self.mileage_rate_entry.grid(
+            row=7,
+            column=1,
+            padx=10,
+            pady=(0, 8),
+            sticky="ew"
         )
 
         # CALCULATE BUTTON # 
