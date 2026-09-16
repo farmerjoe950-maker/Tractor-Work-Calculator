@@ -9,7 +9,7 @@ class ResultsFrame(ctk.CTkFrame):
     def _build_ui(self):
        self.header_label = ctk.CTkLabel(
            self,
-           text="Results Breakdown",
+           text="Quote Breakdown",
            font=ctk.CTkFont(size=16, weight="bold")
        )
        self.header_label.pack(anchor="w", padx=15, pady=(10, 5))
@@ -51,7 +51,7 @@ class ResultsFrame(ctk.CTkFrame):
         if payload.get("status") == "error":
             err_label = ctk.CTkLabel(
                 self.table_frame,
-                text=f"!!! {payload.get('massage', 'An error occurred')}",
+                text=f"!!! {payload.get('message', 'An error occurred')}",
                 text_color="#E74C3C",
                 wraplength=350,
                 justify="left"
@@ -101,7 +101,7 @@ class ResultsFrame(ctk.CTkFrame):
             ("Fuel Cost", f"${res.get('fuel_cost', 0):,.2f}"),
             ("Hourly/Labor Cost", f"${res.get('labor_cost', 0):,.2f}"),
             ("Equipment Wear", f"${res.get('wear_cost', 0):,.2f}"),
-            ("Estimated Time", f"{res.get('total_hours', 0):.2f} hrs"),
+            ("Estimated Time", f"{res.get('job_hours', 0):.2f} hrs"),
         ]
 
         for label_text, val_text in items:

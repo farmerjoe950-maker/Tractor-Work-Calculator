@@ -1,5 +1,4 @@
 import customtkinter as ctk
-from modules import profile_manager
 
 class ProfilesDetailsDialog(ctk.CTkToplevel):
     def __init__(

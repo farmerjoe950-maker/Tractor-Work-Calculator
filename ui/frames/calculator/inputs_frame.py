@@ -360,8 +360,8 @@ class InputsFrame(ctk.CTkFrame):
         # HELPER AND REFRESH METHODS #
 
     def _extract_categories(self) -> list:
-        implements_dict = self.implements() if callable(self.implements) else self.implements
-        if not implements_dict or not isinstance(implements_dict, dict):
+        implements_dict = self._get_implements_dict() if callable(self.implements) else self.implements
+        if not implements_dict:
             return []
         categories = set()
         for impl in implements_dict.values():
@@ -369,12 +369,28 @@ class InputsFrame(ctk.CTkFrame):
                 categories.add(impl.get("category", "Uncategorized"))
         return sorted(list(categories))
 
+    def _get_implements_dict(self) -> dict:
+        if callable(self.implements):
+            res = self.implements()
+            return res if isinstance(res, dict) else {}
+        return self.implements if isinstance(self.implements, dict) else {}
+
     def _get_implements_for_category(self, category: str) -> list:
+        implements_dict = self._get_implements_dict()
         matching = [
-            name for name, data in self.implements.items()
+            name for name, data in implements_dict.items()
             if data.get("category", "Uncategorized") == category
         ]
-        return matching if matching else (list(self.implements.keys())or ["No Implements Found"])
+        return matching if matching else (list(implements_dict.keys())or ["No Implements Found"])
+
+    def _get_implement_speed(self, implement_name: str) -> float:
+        implements_dict = self._get_implements_dict()
+        implement_data = implements_dict.get(implement_name, {})
+        return implement_data.get("speed", 5.0)
+
+    def _sync_speed_entry(self, implement_name: str):
+        speed = self._get_implement_speed(implement_name)
+        self._set_entry_value(self.speed_entry, speed)
 
     def update_profiles(self, new_tractors: dict, new_implements: dict):
         self.tractors = new_tractors
@@ -432,16 +448,28 @@ class InputsFrame(ctk.CTkFrame):
         )
         close_btn.pack(pady=(10, 15))
 
+        # SET ENTRY VALUE FUNCTION
+
+    def _set_entry_value(
+            self, entry_widget: ctk.CTkEntry,
+            value
+    ):
+        entry_widget.delete(0, "end")
+        entry_widget.insert(0, str(value))
+
+        # UPDATE IMPLEMENT SPEED #
+
         # CATEGORY CHANGE FUNTION #
 
-    def on_category_change(self, selected_category):
+    def on_category_change(self, selected_category: str):
         matching_implements = self._get_implements_for_category(selected_category)
         self.implement_dropdown.configure(values=matching_implements)
         if matching_implements:
             self.implement_dropdown.set(matching_implements[0])
-        #new_values = matching_implements if matching_implements else ["No Implements Found"]
-        #self. implement_dropdown.configure(values= new_values)
-        #self.implement_dropdown.set(new_values[0])        
+            self._sync_speed_entry(matching_implements[0])
+
+    def on_implement_change(self, selected_implement: str):
+        self._sync_speed_entry(selected_implement)        
 
         # CALL CALCULATE FUNCTION # 
 
@@ -450,6 +478,9 @@ class InputsFrame(ctk.CTkFrame):
             acres = float(self.acres_entry.get())
             fuel_price = float(self.fuel_price_entry.get())
             hourly_rate = float(self.hourly_rate_entry.get())
+            speed = float(self.speed_entry.get())
+            loading_fee = float(self.loading_fee_entry.get())
+            round_trip_miles = float(self.mileage_entry.get())
             if acres <= 0:
                 if self.on_calculate_callback:
                     self.on_calculate_callback({
@@ -482,6 +513,8 @@ class InputsFrame(ctk.CTkFrame):
                 width=width,
                 implement_data=implement_data,
                 tractor_data=tractor_data,
+                loading_fee=loading_fee,
+                round_trip_miles=round_trip_miles
             )
 
         except Exception as e:
